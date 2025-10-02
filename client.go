@@ -93,3 +93,9 @@ func Start(msgChan chan<- ChatMessage, oauthToken, username, channel string) err
 	return nil
 }
 
+func cleanString(str string) string {
+	clean := strings.ToLower(str)
+	clean = strings.TrimRight(clean, "\r\n")
+	clean = strings.TrimSpace(clean)
+	return clean
+}
