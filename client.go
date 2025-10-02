@@ -50,5 +50,23 @@ func Start(msgChan chan<- ChatMessage, oauthToken, username, channel string) err
 
 		rawMessage := string(line)
 
+		// NOTICE login failure
+		if strings.Contains(rawMessage, "NOTICE") {
+			ircMessage := strings.Split(rawMessage, ":")
+			if len(ircMessage) >= 3 && cleanString(ircMessage[2]) == "login authentication failed" {
+				return errors.New("Login authentication error")
+			}
+			continue
+		}
+
+		// Sucessful Login
+		if strings.Contains(rawMessage, ":tmi.twitch.tv 001") {
+			msgChan <- ChatMessage{
+				"twitch",
+				"IRC Connected...",
+			}
+			continue
+		}
+
 	}
 }
