@@ -84,5 +84,12 @@ func Start(msgChan chan<- ChatMessage, oauthToken, username, channel string) err
 			continue
 		}
 
+		// Respond to PING to stay connected
+		if strings.HasPrefix(rawMessage, "PING") {
+			fmt.Fprintf(conn, "PONG :tmi.twitch.tv\r\n")
+			continue
+		}
 	}
+	return nil
 }
+
