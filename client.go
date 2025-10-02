@@ -50,6 +50,22 @@ func Start(msgChan chan<- ChatMessage, oauthToken, username, channel string) err
 
 		rawMessage := string(line)
 
+		// handle a chatters message
+		if strings.Contains(rawMessage, "PRIVMSG") {
+			// Parse the irc message
+			ircUseranme := strings.Split(rawMessage, "!")[0]
+			username := cleanString(strings.TrimPrefix(ircUseranme, ":"))
+			ircMessage := strings.SplitN(rawMessage, ":", 3)
+			message := cleanString(ircMessage[2])
+
+			// send ChatMessage object to channel
+			msgChan <- ChatMessage{
+				username,
+				message,
+			}
+			continue
+		}
+
 		// NOTICE login failure
 		if strings.Contains(rawMessage, "NOTICE") {
 			ircMessage := strings.Split(rawMessage, ":")
