@@ -28,7 +28,7 @@ type ChatMessage struct {
 //	username: your bots username
 //	channel: the channel name that you want to read from
 func Start(msgChan chan<- ChatMessage, oauthToken, username, channel string) error {
-	conn, err := net.Dial("TCP", "irc.chat.twitch.tv:6667")
+	conn, err := net.Dial("tcp", "irc.chat.twitch.tv:6667")
 	if err != nil {
 		return err
 	}
