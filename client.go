@@ -38,6 +38,7 @@ func Start(msgChan chan<- ChatMessage, oauthToken, username, channel string) err
 	fmt.Fprintf(conn, "PASS oauth:%s\r\n", oauthToken)
 	fmt.Fprintf(conn, "NICK %s\r\n", username)
 	fmt.Fprintf(conn, "JOIN #%s\r\n", channel)
+	fmt.Fprintf(conn, "CAP REQ :twitch.tv/tags\r\n")
 
 	reader := bufio.NewReader(conn)
 
