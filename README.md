@@ -3,13 +3,13 @@
 # Features
 - Connects to Twitch IRC over TCP
 - Parses chat messages into structured Go types
-- Supports all metadata including emotes, badges, ect.
+- Supports all metadata including emotes, badges, etc.
 # Installation 
 ```bash
 go get github.com/brandonwhited-dev/twitchkit-irc
 ```
 # Example
-```Go
+```go
 package main
 
 import (
