@@ -11,6 +11,7 @@ For detailed field info, see the [pkg.go.dev documentation](https://pkg.go.dev/g
 go get github.com/brandonwhited-dev/twitchkit-irc
 ```
 # Example
+See [`twitchkit-examples`](https://github.com/brandonwhited-dev/twitchkit-examples) for more examples of twitckhit.
 ```go
 package main
 
@@ -26,15 +27,21 @@ func main() {
     username := "YOUR_TWITCH_USERNAME" // name of the account linked to your OAuth
     channel := "CHANNEL_NAME"           // name of the channel you want to read messages from
 
-    chatMessages := make(chan twitchkitirc.ChatMessage) // ChatMessage channel
+	// ===Connect to twitch IRC===
+	// Create a message channel
+	chatMessages := make(chan twitchkitirc.ChatMessage)
 
-    if err := twitchkitirc.Start(chatMessages, oauth, username, channel); err != nil {
-        log.Fatal("IRC Error: ", err)
-    }
+	// Start recieving messages
+	err := twitchkitirc.Start(chatMessages, oauth, username, channel)
+	if err != nil {
+		log.Fatal("IRC Error: ", err)
+	}
 
-    for message := range chatMessages {
-        fmt.Printf("%s: %s \n", message.Username, message.Message)
-        fmt.Println("Tags: ", message.Tags) // prints Tags struct
-    }
+	// Handle messages
+	go func() {
+		for message := range chatMessages {
+			fmt.Printf("%s: %s \n", message.Username, message.Message)
+		}
+	}()
 }
 ```
